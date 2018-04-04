@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +20,7 @@ import java.util.List;
 @Table(name="users")
 public class User implements UserDetails{
     @Transient
-    private LocalDateTime now = LocalDateTime.now();
+    private Timestamp now = new Timestamp(System.currentTimeMillis());
 
     private Long id;
     private String firstname;
@@ -29,11 +30,12 @@ public class User implements UserDetails{
     private Role role;
     @Transient
     private long expires;
-    private LocalDateTime lastLogin = now;
+    private Timestamp lastLogin = now;
     private boolean enabled = true;
-    private LocalDateTime createdAt = now;
-    private LocalDateTime modifiedAt = now;
+    private Timestamp createdAt = now;
+    private Timestamp modifiedAt = now;
     private boolean deleted = false;
+    private Boolean resetPassword = false;
 
     public User(String firstname, String lastname, String password, String email, Role role) {
         this.firstname = firstname;
@@ -128,21 +130,21 @@ public class User implements UserDetails{
 
     @Column(name = "created_at")
     @JsonIgnore
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
     @Column(name = "modified_at")
     @JsonIgnore
-    public LocalDateTime getModifiedAt() {
+    public Timestamp getModifiedAt() {
         return modifiedAt;
     }
 
-    public void setModifiedAt(LocalDateTime modifiedAt) {
+    public void setModifiedAt(Timestamp modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 
@@ -162,11 +164,11 @@ public class User implements UserDetails{
 
     @Column(name = "last_login")
     @JsonIgnore
-    public LocalDateTime getLastLogin() {
+    public Timestamp getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(LocalDateTime lastLogin) {
+    public void setLastLogin(Timestamp lastLogin) {
         this.lastLogin = lastLogin;
     }
 
@@ -214,5 +216,15 @@ public class User implements UserDetails{
     @Transient
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    @JsonIgnore
+    @Column(name="reset_password")
+    public Boolean isResetPassword() {
+        return resetPassword;
+    }
+
+    public void setResetPassword(Boolean resetPassword) {
+        this.resetPassword = resetPassword;
     }
 }

@@ -1,5 +1,6 @@
 package com.springboilerplate.springboilerplate.service;
 
+import com.springboilerplate.springboilerplate.message.MailSender;
 import com.springboilerplate.springboilerplate.mocks.EnvironmentMocks;
 import com.springboilerplate.springboilerplate.mocks.MapperMocks;
 import com.springboilerplate.springboilerplate.dto.UserDto;
@@ -31,6 +32,8 @@ public class UserServiceImplTest {
     private UserRepository userRepository;
     @MockBean
     private UserDtoMapper userDtoMapper;
+    @MockBean
+    private MailSender mailSender;
 
     //system under test.
     private UserService userService;
@@ -47,7 +50,7 @@ public class UserServiceImplTest {
         environmentMocks.initMocks(environment);
         roleMocks.initMocks(roleRepository);
         userMocks.initMocks(userRepository);
-        userService = new UserServiceImpl(environment, roleRepository, userRepository, userDtoMapper);
+        userService = new UserServiceImpl(environment, roleRepository, userRepository, userDtoMapper, mailSender);
     }
 
     @Test

@@ -1,7 +1,5 @@
 package com.springboilerplate.springboilerplate.mocks;
 
-import com.springboilerplate.springboilerplate.dto.UserDto;
-import com.springboilerplate.springboilerplate.mapper.UserDtoMapper;
 import com.springboilerplate.springboilerplate.model.User;
 import com.springboilerplate.springboilerplate.repository.UserRepository;
 import com.springboilerplate.springboilerplate.stubs.TestStubs;

@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -20,12 +21,14 @@ public class CustomUserDetailsService implements CustomUserService{
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> optionalUser = userRepository.getByEmailAndDeletedFalse(username);
-        optionalUser.ifPresent(this::reflectLogin);
+        if (optionalUser.isPresent()){
+            return reflectLogin(optionalUser.get());
+        }
         throw new UsernameNotFoundException("User with  '" + username + "' email not found.");
     }
 
     private User reflectLogin(User user) {
-        //user.setLastLogin(LocalDateTime.now());
+        user.setLastLogin(new Timestamp(System.currentTimeMillis()));
         return userRepository.saveAndFlush(user);
     }
 }

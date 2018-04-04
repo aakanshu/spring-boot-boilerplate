@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,6 +37,13 @@ public class UserController {
         responseHeaders.set(TokenAuthenticationService.AUTH_HEADER_NAME, token);
         return new ResponseEntity<>("Registered and Logged in", responseHeaders, HttpStatus.CREATED);
     }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/{email}/resetPassword")
+    public ResponseEntity<?> resetPassword(@PathVariable("email") String email) throws Exception {
+        userService.resetPassword(email);
+        return ResponseEntity.ok().build();
+    }
+
 
     @GetMapping(path = "/hello")
     public String getHello(){

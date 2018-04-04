@@ -39,6 +39,7 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
                 .and().servletApi().and().headers().cacheControl();
 
         http.authorizeRequests()
+                .antMatchers("/v1/users/*/resetPassword").permitAll()
                 .antMatchers("/v1/users/register").permitAll()
                 .antMatchers("/v1/**").authenticated()
                 .antMatchers("/v1/users/*").authenticated()
